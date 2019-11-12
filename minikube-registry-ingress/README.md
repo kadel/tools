@@ -1,3 +1,4 @@
-# minikube-registry-ingress.sh
+# minikube-registry-ingress
 
-Creates Ingress for Kubernetes registry on minikube
+## minikube-registry-ingress.sh
+Create Ingress for Kubernetes registry on minikube
