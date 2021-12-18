@@ -1,5 +1,14 @@
 #!/bin/sh
 
+set -e
+set -x
+
+if [ -z "$1" ]; then
+	echo "Usage: $0 <disk>"
+	echo "This will format <disk>, create ZFS on it and install a basic NixOS system."
+	exit 1
+fi
+
 DISK=$1
 EFI_PART=1
 ZFS_PART=2
@@ -66,7 +75,7 @@ cat <<EOT > /mnt/etc/nixos/configuration.nix
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "zfs" ];
-  boot.zfs.devNodes="/dev/disk/by-part-uuid";
+  boot.zfs.devNodes="/dev/disk/by-partuuid";
 
   networking.hostName = "nixos"; # Define your hostname.
   networking.wireless.enable = false;  # Enables wireless support via wpa_supplicant.
