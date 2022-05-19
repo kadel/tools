@@ -1,0 +1,24 @@
+#cloud-config
+hostname: test1
+fqdn: test1.example.com
+manage_etc_hosts: true
+users:
+  - name: ubuntu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    home: /home/ubuntu
+    shell: /bin/bash
+    lock_passwd: false
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABhADZnBl3qgH8FslWyFLW+gDlf7hSP9qlaPcxdmOOC+td9WjiXIWvsO6z1IWayCLtglsbEqIz9PoN8xTLRD0z2qnL04zXOIjswioT4W7Kwe4BIABGPCLl0Hm4Jlch4KPj04BwTsssFe8UXZ62jdjupY0h47gXl+iGfhr3w8HPa7MF0PLpTDFookp6lqmq95xKx0M1udf3bmujNL59q9KGf5+aboQKf3oRzDDUftzaGeW4T2OMKkKdnYApdk+bvsL8kMPP09aTRuPF7GsV3u5whrE95cHj3XEGSVp3/5ArQPHvDarAKWVwbTVE1f6dbXkaNbs6Rlqv3YfsAsk4OtGKXqOtnLhERDTB+DN4OKQI3N3EuzSKQhlxaY+EbalgG3eXAU/61WTVO9oasTMAjkvBYmdZc1pX+wnbBlosOWJT+4wLUQ5tb2gtbLKz5uxSu7cS6ByEcrXY/PzeXZwnwnHiZ3qC3ecSGVU1sWT6V2UV9N6CZmTV155nHRSnYYlLmqcOxcE3GRE= tomas@kral
+ssh_pwauth: false
+disable_root: false
+chpasswd:
+  list:
+     - ubuntu:linux
+  expire: false
+package_update: true
+packages:
+  - qemu-guest-agent
+
+
