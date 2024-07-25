@@ -1,7 +1,0 @@
-#!/bin/sh
-
-# crc in usermode networking listens on localhost
-# this exposes it on a different port for all addresses
-
-socat TCP-LISTEN:16443,fork TCP:localhost:6443
-
