@@ -55,3 +55,5 @@ crc-ha-proxy:
   sed "s/\$CRC_IP/$CRC_IP/g" {{justfile_directory()}}/containers/crc-ha-proxy/config/haproxy.cfg.template > {{justfile_directory()}}/containers/crc-ha-proxy/config/haproxy.cfg
 
   podman run --replace -it --name crc-ha-proxy -v {{justfile_directory()}}/containers/crc-ha-proxy/config:/usr/local/etc/haproxy:Z --sysctl net.ipv4.ip_unprivileged_port_start=0 docker.io/library/haproxy:latest
+
+  rm {{justfile_directory()}}/containers/crc-ha-proxy/config/haproxy.cfg
