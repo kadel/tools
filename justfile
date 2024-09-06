@@ -21,12 +21,21 @@ generate-deployment name image port:
     kubectl create deployment {{name}} --image={{image}} --port={{port}} --dry-run=client -o yaml
 
 # run bash in image
-quick-bash image:
+bashin-x86 image:
   podman run --platform linux/amd64 -it --rm --entrypoint /bin/bash {{image}}
 
 # run sh in image
-quick-sh image:
+shin-x86 image:
   podman run --platform linux/amd64 -it --rm --entrypoint /bin/sh {{image}}
+
+
+# run bash in image
+bashin image:
+  podman run -it --rm --entrypoint /bin/bash {{image}}
+
+# run sh in image
+shin image:
+  podman run -it --rm --entrypoint /bin/sh {{image}}
 
 
 # build and push container image
@@ -58,6 +67,8 @@ crc-ha-proxy:
 
   rm {{justfile_directory()}}/containers/crc-ha-proxy/config/haproxy.cfg
 
-
+# smaller pdf ()
+pdf-small infile outfile:
+  gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile={{outfile}} {{infile}}
 
 import 'bluefin-tools.just'
