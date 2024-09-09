@@ -43,12 +43,11 @@ build-push image *args=".":
   podman build --platform linux/amd64 -t {{image}} {{args}}
   podman push {{image}}
 
-
 # compile butane file
 butane infile outfile:
   podman run --interactive --rm --security-opt label=disable \
-       --volume ${PWD}:/pwd --workdir /pwd quay.io/coreos/butane:release \
-       --pretty --strict {{infile}} > {{outfile}}
+    --volume ${PWD}:/pwd --workdir /pwd quay.io/coreos/butane:release \
+    --pretty --strict {{infile}} > {{outfile}}
 
 # extract first layer from image into outfile using oras cli
 extract-first-layer image tag outfile:
@@ -62,9 +61,7 @@ crc-ha-proxy:
   #!/usr/bin/env sh
   export CRC_IP=$(crc ip)
   sed "s/\$CRC_IP/$CRC_IP/g" {{justfile_directory()}}/containers/crc-ha-proxy/config/haproxy.cfg.template > {{justfile_directory()}}/containers/crc-ha-proxy/config/haproxy.cfg
-
   podman run --replace -it --name crc-ha-proxy -v {{justfile_directory()}}/containers/crc-ha-proxy/config:/usr/local/etc/haproxy:Z --sysctl net.ipv4.ip_unprivileged_port_start=0 docker.io/library/haproxy:latest
-
   rm {{justfile_directory()}}/containers/crc-ha-proxy/config/haproxy.cfg
 
 # smaller pdf ()
@@ -72,3 +69,4 @@ pdf-small infile outfile:
   gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile={{outfile}} {{infile}}
 
 import 'bluefin-tools.just'
+import 'private.just'
