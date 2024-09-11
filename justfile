@@ -68,5 +68,19 @@ crc-ha-proxy:
 pdf-small infile outfile:
   gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile={{outfile}} {{infile}}
 
+
+# remove all volumes, tool is podman or docker
+cleanup-volumes tool:
+  {{tool}} volume rm $({{tool}} volume ls -q)
+
+# remove all images, tool is podman or docker
+cleanup-images tool:
+  {{tool}} rmi $({{tool}} images -q)
+
+# remove all containers, tool is podman or docker
+cleanup-containers tool:
+  {{tool}} rm $({{tool}} ps -a -q)
+
+
 import 'bluefin-tools.just'
 import 'private.just'
