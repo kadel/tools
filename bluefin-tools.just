@@ -109,6 +109,9 @@ ollama ACTION="help":
     PodmanArgs=--ulimit=host
     PodmanArgs=--security-opt=label=disable
     PodmanArgs=--cgroupns=host
+    PodmanArgs=--gpus=all
+    Environment="OLLAMA_HOST=0.0.0.0"
+
 
     Image=docker.io/ollama/ollama:${IMAGE}
     ${CUSTOM_ARGS}
