@@ -82,5 +82,50 @@ cleanup-containers tool:
   {{tool}} rm $({{tool}} ps -a -q)
 
 
+# quickly start a test vm
+start-test-vm vmName="test":
+  #!/usr/bin/env bash
+  connect="qemu:///system"
+
+  vmName={{vmName}}
+  orgImage="//var/lib/libvirt/boot/Fedora-Cloud-Base-Generic.x86_64-40.qcow2"
+  vmImage="/var/lib/libvirt/images/${vmName}.qcow2"
+  cloudInitFile="/var/lib/libvirt/images/${vmName}-cloud-init.yaml"
+
+  read -r -d '' CLOUDINIT <<-EOF
+  #cloud-config
+  hostname: test
+  fqdn: test.home.tomaskral.eu
+  preserve_hostname: false
+  users:
+    - name: user
+      hashed_passwd: "$6$rounds=500000$3/0LfJPUdqDe3VK/$MzRg/g1o.8iENQJRCjQnh6QHMGe/stx7EG9iZrO.8BbLqU0i9x8YTb4Jy.c.WYXpXsAmgP5SmCxroxsXwUzKl."
+      sudo: ALL=(ALL) NOPASSWD:ALL
+      ssh_authorized_keys:
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJNkcC8+8183dmGtM27t9G9fUxWogsquXzOrNn3x56Pm test@localhost
+  EOF
+
+  echo "${CLOUDINIT}" | sudo tee ${cloudInitFile}
+  sudo chown libvirt-qemu:libvirt-qemu ${cloudInitFile}
+
+  sudo cp ${orgImage} ${vmImage}
+  sudo chown libvirt-qemu:libvirt-qemu ${vmImage}
+  sudo qemu-img resize ${vmImage} 20G
+  virt-install --connect ${connect} --name ${vmName} \
+    --memory 4096 --cpu host --vcpus 2 --graphics none \
+    --os-variant fedora40 \
+    --import --disk ${vmImage},format=qcow2,bus=virtio \
+    --cloud-init user-data="${cloudInitFile}" \
+    --network bridge=br0,model=virtio
+  
+destroy-test-vm vmName="test":
+  #!/usr/bin/env bash
+  vmName=test
+  connect="qemu:///system"
+  virsh --connect ${connect} destroy test
+  virsh --connect ${connect} undefine test
+  sudo rm /var/lib/libvirt/images/${vmName}.qcow2
+  sudo rm /var/lib/libvirt/images/${vmName}-cloud-init.yaml
+
 import 'bluefin-tools.just'
 import 'private.just'
