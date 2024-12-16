@@ -99,7 +99,8 @@ start-test-vm vmName="test":
   preserve_hostname: false
   users:
     - name: user
-      hashed_passwd: "$6$rounds=500000$3/0LfJPUdqDe3VK/$MzRg/g1o.8iENQJRCjQnh6QHMGe/stx7EG9iZrO.8BbLqU0i9x8YTb4Jy.c.WYXpXsAmgP5SmCxroxsXwUzKl."
+      # following password is only for testing
+      hashed_passwd: "$6$rounds=500000$3/0LfJPUdqDe3VK/$MzRg/g1o.8iENQJRCjQnh6QHMGe/stx7EG9iZrO.8BbLqU0i9x8YTb4Jy.c.WYXpXsAmgP5SmCxroxsXwUzKl." # notsecret
       sudo: ALL=(ALL) NOPASSWD:ALL
       ssh_authorized_keys:
         - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJNkcC8+8183dmGtM27t9G9fUxWogsquXzOrNn3x56Pm test@localhost
